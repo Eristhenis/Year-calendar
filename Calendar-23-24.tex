@@ -1,0 +1,105 @@
+\documentclass[a4paper]{article}
+\usepackage[greek,english]{babel}
+\usepackage[active,tightpage]{preview}
+\usepackage{kerkis}
+
+\newcommand{\en}{\selectlanguage{english}}
+\newcommand{\gr}{\selectlanguage{greek}}
+
+\usepackage{tikz}
+    \usetikzlibrary{calendar}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+
+\usetikzlibrary{positioning,calendar}
+\usetikzlibrary{decorations.markings}
+
+\colorlet{mainColor}{blue!90!black}
+\colorlet{darkgreen}{green!50!black}
+\colorlet{holidayColor}{red!70}
+\colorlet{vacationColor}{red!10!gray}
+%\def\holidayColor{red!70}
+%\def\vacationColor{black!50}
+\newcount\y
+\newcount\yn
+\y=2023
+\yn=2024
+
+
+\newcommand{\calrow}[1]{%\node[anchor=base left=of lun](lun){A};
+    \node[mainColor,anchor=base east](lun){Δε};
+    \node[mainColor,base right=of lun](mar){Τρ}; 
+    \node[mainColor,base right=of mar](mer){Τε};
+    \node[mainColor,base right=of mer](jeu){Πε}; 
+    \node[mainColor,base right=of jeu](ven){Πα};
+    \node[mainColor,base right=of ven](sam){Σα}; 
+    \node[mainColor,holidayColor, base right=of sam](dim){Κυ};
+    \node[darkgreen,above=of jeu]{\textbf{#1}};
+}
+
+\newcommand{\calperiod}[1]{
+    \calendar[scale=1.15,dates=\y-#1-01 to \y-#1-last]
+    \vacations if(Sunday) [holidayColor] \holidays;
+}
+\newcommand{\calperiodn}[1]{
+    \calendar[scale=1.15,dates=\yn-#1-01 to \yn-#1-last]
+    \vacations if(Sunday) [holidayColor] \holidays;
+}
+
+\newcommand{\holidays}{% holidays
+if (equals=10-28) [holidayColor]% 28η Οκτωβρίου
+if (equals=12-25) [holidayColor]% Χριστούγεννα
+if (equals=12-26) [holidayColor]% Επόμενη Χριστουγέννων
+if (equals=01-01) [holidayColor]% Πρωτοχρονιά
+if (equals=01-06) [holidayColor]% Θεοφάνεια
+if (equals=03-18) [holidayColor]% Καθαρά Δευτέρα
+if (equals=03-25) [holidayColor]% 25η Μαρτίου
+if (equals=05-03) [holidayColor]% Μ. Παρασκευή
+if (equals=05-04) [holidayColor]% Μ. Σάββατο
+if (equals=05-05) [holidayColor]% Άγιον Πάσχα
+if (equals=05-06) [holidayColor]% Δευτέρα του Πάσχα
+if (equals=05-01) [holidayColor]% Πρωτομαγιά 
+if (equals=06-24) [holidayColor]% Αγίου Πνεύματος
+if (equals=08-15) [holidayColor]% Κοίμησις της Θεοτόκου
+}
+
+\newcommand{\vacations}{% vacations
+if (equals=01-01) [vacationColor]%
+if (between=12-24 and 12-31) [vacationColor]% Christmas
+if (between=01-01 and 01-07) [vacationColor]% Christmas
+if (between=04-29 and 05-11) [vacationColor]% Easter
+if (between=07-01 and 08-31) [vacationColor]% Summer time
+}
+
+
+\begin{document}
+\gr
+
+\color{mainColor}
+
+\begin{tikzpicture}[every calendar/.style={week list}]
+\sffamily
+
+\matrix[%
+row 1/.style={darkgreen,node distance=.3ex},%
+row 3/.style={darkgreen,node distance=.3ex},
+row 5/.style={darkgreen,node distance=.3ex},
+row 7/.style={darkgreen,node distance=.3ex},
+column sep=3ex,%
+draw=darkgreen,thick,rounded corners=5pt,%
+postaction={decorate,decoration={markings,mark=at position 0.551 with
+{\node[fill=white,text=darkgreen,font={\bfseries\Large}] (year) 
+{Σχολικό έτος: \the\y-\the\yn};}}}
+]{%
+\calrow{Σεπτέμβριος} & \calrow{Οκτώβριος} & \calrow{Νοέμβριος} \\
+\calperiod{09} & \calperiod{10} & \calperiod{11}\\[1ex]
+\calrow{Δεκέμβριος} & \calrow{Ιανουάριος} & \calrow{Φεβρουάριος} \\
+\calperiod{12} & \calperiodn{01} & \calperiodn{02}\\[1ex]
+\calrow{Μάρτιος} & \calrow{Απρίλιος} & \calrow{Μάιος} \\
+\calperiodn{03} & \calperiodn{04} & \calperiodn{05}\\[1ex]
+\calrow{Ιούνιος} & \calrow{Ιούλιος} & \calrow{Αύγουστος} \\
+\calperiodn{06} & \calperiodn{07} & \calperiodn{08}\\[3mm]
+& \\
+};
+\end{tikzpicture}
+\end{document}
